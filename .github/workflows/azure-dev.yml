@@ -189,22 +189,9 @@ jobs:
     with:
       environment: test
 
-  approval-prod:
-    needs: evaluate-test
-    runs-on: ubuntu-latest
-    environment:
-      name: prod
-      url: https://prod.example.com
-    steps:
-      - name: Await manual approval before production deployment
-        uses: reviewdog/action-wait-for-approval@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          message: 'Manual approval required to proceed to production deployment.'
-
   deploy-prod:
     runs-on: ubuntu-latest
-    needs: approval-prod
+    needs: evaluate-test
     environment:
       name: prod
       url: https://prod.example.com
