@@ -1,3 +1,5 @@
+pip-requirements
 -r src/requirements.txt
+ddt
 ruff
 pre-commit
