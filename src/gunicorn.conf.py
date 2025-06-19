@@ -173,7 +173,7 @@ async def create_agent(ai_client: AIProjectClient,
     
     instructions = f"""
     You are a AI helpful agent that extract entity in the follow format: {'entity': 'value'}\n. 
-    You only do the following entity type: Address, Place. If you have more than one entity in the text then return a array of entity and its value
+    You only do the following entity type: Address, Place,Company, Person. If you have more than one entity in the text then return a array of entity and its value
     """ \
     
     agent = await ai_client.agents.create_agent(
