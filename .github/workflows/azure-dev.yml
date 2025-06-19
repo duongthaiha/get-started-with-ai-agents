@@ -265,7 +265,7 @@ jobs:
         run: azd deploy --no-prompt
       - name: Validate Deployment
         run: azd env get-values
-      - name: 
+
 
   evaluate-prod:
     needs: deploy-prod
@@ -274,7 +274,7 @@ jobs:
       environment: prod
   redteam-prod:
     runs-on: ubuntu-latest
-    needs: evaluate-test
+    needs: deploy-prod
     environment:
       name: prod
       url: https://prod.example.com
