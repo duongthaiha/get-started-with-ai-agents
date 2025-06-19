@@ -265,9 +265,62 @@ jobs:
         run: azd deploy --no-prompt
       - name: Validate Deployment
         run: azd env get-values
+      - name: 
 
   evaluate-prod:
     needs: deploy-prod
     uses: ./.github/workflows/ai-evaluation.yaml
     with:
       environment: prod
+  redteam-prod:
+    runs-on: ubuntu-latest
+    needs: evaluate-test
+    environment:
+      name: prod
+      url: https://prod.example.com
+    env:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
+      AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
+      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+      AZURE_AIHUB_NAME: ${{ secrets.AZURE_AIHUB_NAME }}
+      AZURE_AIPROJECT_NAME: ${{ secrets.AZURE_AIPROJECT_NAME }}
+      AZURE_AISERVICES_NAME: ${{ secrets.AZURE_AISERVICES_NAME }}
+      AZURE_SEARCH_SERVICE_NAME: ${{ secrets.AZURE_SEARCH_SERVICE_NAME }}
+      AZURE_APPLICATION_INSIGHTS_NAME: ${{ secrets.AZURE_APPLICATION_INSIGHTS_NAME }}
+      AZURE_CONTAINER_REGISTRY_NAME: ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}
+      AZURE_KEYVAULT_NAME: ${{ secrets.AZURE_KEYVAULT_NAME }}
+      AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
+      AZURE_LOG_ANALYTICS_WORKSPACE_NAME: ${{ secrets.AZURE_LOG_ANALYTICS_WORKSPACE_NAME }}
+      USE_CONTAINER_REGISTRY: ${{ secrets.USE_CONTAINER_REGISTRY }}
+      USE_APPLICATION_INSIGHTS: ${{ secrets.USE_APPLICATION_INSIGHTS }}
+      USE_AZURE_AI_SEARCH_SERVICE: ${{ secrets.USE_AZURE_AI_SEARCH_SERVICE }}
+      AZURE_AI_AGENT_NAME: ${{ vars.AZURE_AI_AGENT_NAME }}
+      AZURE_EXISTING_AGENT_ID: ${{ vars.AZURE_EXISTING_AGENT_ID }}
+      AZURE_AI_AGENT_DEPLOYMENT_NAME: ${{ vars.AZURE_AI_AGENT_DEPLOYMENT_NAME }}
+      AZURE_AI_AGENT_DEPLOYMENT_SKU: ${{ vars.AZURE_AI_AGENT_DEPLOYMENT_SKU }}
+      AZURE_AI_AGENT_DEPLOYMENT_CAPACITY: ${{ vars.AZURE_AI_AGENT_DEPLOYMENT_CAPACITY }}
+      AZURE_AI_AGENT_MODEL_NAME: ${{ vars.AZURE_AI_AGENT_MODEL_NAME }}
+      AZURE_AI_AGENT_MODEL_FORMAT: ${{ vars.AZURE_AI_AGENT_MODEL_FORMAT }}
+      AZURE_AI_AGENT_MODEL_VERSION: ${{ vars.AZURE_AI_AGENT_MODEL_VERSION }}
+      AZURE_AI_EMBED_DEPLOYMENT_NAME: ${{ vars.AZURE_AI_EMBED_DEPLOYMENT_NAME }}
+      AZURE_AI_EMBED_DEPLOYMENT_SKU: ${{ vars.AZURE_AI_EMBED_DEPLOYMENT_SKU }}
+      AZURE_AI_EMBED_DEPLOYMENT_CAPACITY: ${{ vars.AZURE_AI_EMBED_DEPLOYMENT_CAPACITY }}
+      AZURE_AI_EMBED_MODEL_NAME: ${{ vars.AZURE_AI_EMBED_MODEL_NAME }}
+      AZURE_AI_EMBED_MODEL_FORMAT: ${{ vars.AZURE_AI_EMBED_MODEL_FORMAT }}
+      AZURE_AI_EMBED_MODEL_VERSION: ${{ vars.AZURE_AI_EMBED_MODEL_VERSION }}
+      AZURE_EXISTING_AIPROJECT_RESOURCE_ID: ${{ vars.AZURE_EXISTING_AIPROJECT_RESOURCE_ID }}
+      TEMPLATE_VALIDATION_MODE: ${{ vars.TEMPLATE_VALIDATION_MODE }}
+      SEED: ${{ vars.SEED }}
+      AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED: ${{ vars.AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED }}
+      ENABLE_AZURE_MONITOR_TRACING: ${{ vars.ENABLE_AZURE_MONITOR_TRACING }}
+    steps:
+      - name: Run red teaming agent
+        run: |
+          echo "Run red teaming agent"
+          sleep 5
+        shell: bash
+
+  
