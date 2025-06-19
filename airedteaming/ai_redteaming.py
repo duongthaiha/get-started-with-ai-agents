@@ -89,7 +89,7 @@ async def run_red_team():
             red_team = RedTeam(
                 azure_ai_project=project_endpoint,
                 credential=credential,
-                risk_categories=[RiskCategory.Violence],
+                risk_categories=[RiskCategory.Violence, RiskCategory.HateUnfairness, RiskCategory.Sexual],
                 num_objectives=1,
                 output_dir="redteam_outputs/"
             )
@@ -98,7 +98,11 @@ async def run_red_team():
             result = await red_team.scan(
                 target=agent_callback,
                 scan_name="Agent-Scan",
-                attack_strategies=[AttackStrategy.Flip],
+                attack_strategies=[
+                    AttackStrategy.Flip, 
+                    AttackStrategy.Jailbreak, 
+                    AttackStrategy.AsciiSmuggler
+                ]
             )
             print("Red Team scan complete.")
 
