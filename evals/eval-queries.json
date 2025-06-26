@@ -1,8 +1,31 @@
 [
     {
-        "query": "What features do the SmartView Glasses have?"
+        "query": "What features do the car insurance"
     },
     {
-        "query": "How long is the warranty on the SmartView Glasses?"
+        "query": "How long is the cool off period for car insurance"
+    },
+    {
+        "query": "What is your car insurance policy documentation like"
+    },
+    {
+        "query": "What is the process for making a claim on your car insurance"
+    },
+    {
+        "query": "How do I cancel my car insurance policy"
+    },
+    {
+        "query": "What is the process for renewing my car insurance policy"
+    },
+    {
+        "query": "What is the process for updating my personal information on my car insurance policy"
+    },
+    {
+        "query": "What is the process for adding a new driver to my car insurance policy"
+    },
+    {
+        "query": "What is the process for removing a driver from my car insurance policy"
     }
+
+
 ]
