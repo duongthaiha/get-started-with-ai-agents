@@ -20,10 +20,9 @@ param environmentName string
 @metadata({
   azd: {
     type: 'location'
-    // quota-validation for ai models: gpt-4o-mini & text-embedding-3-small
+    // quota-validation for ai models: gpt-4o-mini
     usageName: [
-      'OpenAI.GlobalStandard.gpt-4o-mini,30'
-      'OpenAI.GlobalStandard.text-embedding-3-small,30'
+      'OpenAI.GlobalStandard.gpt-4o-mini,80'
     ]
   }
 })
@@ -267,6 +266,7 @@ module containerApps 'core/host/container-apps.bicep' = {
   params: {
     name: 'app'
     location: location
+    containerRegistryName: '${abbrs.containerRegistryRegistries}${resourceToken}'
     tags: tags
     containerAppsEnvironmentName: 'containerapps-env-${resourceToken}'
     logAnalyticsWorkspaceName: empty(azureExistingAIProjectResourceId)
@@ -286,6 +286,7 @@ module api 'api.bicep' = {
     identityName: '${abbrs.managedIdentityUserAssignedIdentities}api-${resourceToken}'
     containerAppsEnvironmentName: containerApps.outputs.environmentName
     azureExistingAIProjectResourceId: projectResourceId
+    containerRegistryName: containerApps.outputs.registryName
     agentDeploymentName: agentDeploymentName
     searchConnectionName: searchConnectionName
     aiSearchIndexName: aiSearchIndexName
@@ -294,7 +295,6 @@ module api 'api.bicep' = {
     embeddingDeploymentDimensions: embeddingDeploymentDimensions
     agentName: agentName
     agentID: agentID
-    projectName: aiProjectName
     enableAzureMonitorTracing: enableAzureMonitorTracing
     azureTracingGenAIContentRecordingEnabled: azureTracingGenAIContentRecordingEnabled
     projectEndpoint: projectEndpoint
@@ -448,3 +448,4 @@ output SERVICE_API_NAME string = api.outputs.SERVICE_API_NAME
 output SERVICE_API_URI string = api.outputs.SERVICE_API_URI
 output SERVICE_API_ENDPOINTS array = ['${api.outputs.SERVICE_API_URI}']
 output SEARCH_CONNECTION_ID string = ''
+output AZURE_CONTAINER_REGISTRY_ENDPOINT string = containerApps.outputs.registryLoginServer

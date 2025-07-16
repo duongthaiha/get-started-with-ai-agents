@@ -4,7 +4,9 @@
 
 name: azd-get-started-with-ai-agents
 metadata:
-  template: azd-get-started-with-ai-agents@1.0.0
+  template: azd-get-started-with-ai-agents@1.0.1
+requiredVersions:
+  azd: ">=1.14.0"
 
 hooks:
   preup:
@@ -18,17 +20,6 @@ hooks:
       run: ./scripts/validate_env_vars.ps1
       interactive: true
       continueOnError: false      
-  preprovision:
-    posix:
-      shell: sh
-      run: chmod u+r+x ./scripts/set_default_models.sh; chmod u+r+x ./scripts/resolve_model_quota.sh; ./scripts/set_default_models.sh
-      interactive: true
-      continueOnError: false
-    windows:
-      shell: pwsh
-      run: ./scripts/set_default_models.ps1
-      interactive: true
-      continueOnError: false      
   postprovision:
     windows:
       shell: pwsh
@@ -40,7 +31,25 @@ hooks:
       run: chmod u+r+x ./scripts/write_env.sh; ./scripts/write_env.sh;
       continueOnError: true
       interactive: true
-
+  postdeploy:
+    windows:
+      shell: pwsh
+      run: ./scripts/postdeploy.ps1
+      continueOnError: true
+      interactive: true
+    posix:
+      shell: sh
+      run: chmod u+r+x ./scripts/postdeploy.sh; ./scripts/postdeploy.sh;
+      continueOnError: true
+      interactive: true
+services:
+  api_and_frontend:
+    project: ./src
+    language: py
+    host: containerapp
+    docker:
+      image: api_and_frontend
+      remoteBuild: true
 pipeline:
   variables:
     - AZURE_RESOURCE_GROUP

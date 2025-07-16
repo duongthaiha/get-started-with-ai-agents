@@ -9,10 +9,18 @@ This document describes how to customize the deployment of the Agents Chat with 
 * [Customizing model deployments](#customizing-model-deployments)
 
 ## Use existing resources
-Be default, this template provisions a new resource group along with other resources.   If you already have provisioned Azure AI Foundry and Azure AI Foundry Project, you might reuse these resources by setting:
+Be default, this template provisions a new resource group along with other resources.   If you already have provisioned Azure AI Foundry and Azure AI Foundry Project (not a hub based project), you might reuse these resources by setting:
+
+To find the value:
+
+1. Open the azure portal
+2. Navigate to the AI foundry resource
+3. Select projects in the sidebar and open the desired project
+4. Oo to 'Resource Management' -> 'Properties' in the sidebar
+5. Copy the value from 'Resource ID'
 
 ```shell
-azd env set AZURE_EXISTING_AIPROJECT_RESOURCE_ID "https://<your-ai-services-account-name>.services.ai.azure.com/api/projects/<your-project-name>"
+azd env set AZURE_EXISTING_AIPROJECT_RESOURCE_ID "/subscriptions/<your-azure-subid>/resourceGroups/<your-rg>/providers/Microsoft.CognitiveServices/accounts/<your-ai-services-account-name>/projects/<your-project-name>"
 ```
 
 Notices that Application Insight and AI Search will not be created in this scenario.
@@ -66,9 +74,9 @@ Set the version of the agent model:
 azd env set AZURE_AI_AGENT_MODEL_VERSION 2024-07-18
 ```
 
-### Setting capacity and deployment SKU
+### Setting models, capacity, and deployment SKU
 
-For quota regions, you may find yourself needing to modify the default capacity and deployment SKU using environment variables as below. The default tokens per minute deployed in this template is 80,000 for agent model and 50,000 for the embedding model that is enough for all operations.  If the region has quota less the these numbers, you will be prompt to input a lower capacity up to the available limit.
+By default, this template sets the agent model deployment capacity to 80,000 tokens per minute. For AI Search, the embedding model requires a capacity of 50,000 tokens per minute. Due to current Bicep limitations, only the chat model quota is validated when you select a location during `azd up`. If you want to change these defaults, set the desired region using `azd env set AZURE_LOCATION <region>` (for example, `eastus`) to bypass quota validation. Follow the instructions below to update the model settings before running `azd up`.
 
 Change the default capacity (in thousands of tokens per minute) of the agent deployment:
 
